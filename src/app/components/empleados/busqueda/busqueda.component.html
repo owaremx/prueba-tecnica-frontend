@@ -1,0 +1,97 @@
+<h2>Búsqueda de empleados</h2>
+<p>Filtros de búsqueda</p>
+<form method="post" [formGroup]="form">
+    <fieldset class="row mb-3">
+        <legend>Datos personales</legend>
+        <div class="col-md-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="nombre" name="nombre" formControlName="nombre" maxlength="250"  required>
+        </div>
+        <div class="col-md-3"> 
+            <label for="apellido" class="form-label">Apellido</label>
+            <input type="text" class="form-control" id="apellido" name="apellido" formControlName="apellido" maxlength="250" required>
+        </div>
+        <div class="col-md-3">
+            <label for="correoElectronico" class="form-label">Correo Electrónico</label>
+            <input type="email" class="form-control" id="correoElectronico" name="correoElectronico" formControlName="correoElectronico" maxlength="250" required>
+        </div>
+        <div class="col-md-3">
+            <label for="estadoId" class="form-label">Estado</label>
+            <select class="form-select" id="estadoId" name="estadoId" required formControlName="estadoId">
+                <option value="0">Todos</option>
+                <option *ngFor="let e of estados" [ngValue]="e.id">{{ e.nombre }}</option>
+            </select>
+        </div>
+    </fieldset>
+
+    <fieldset class="row mb-3">
+        <legend>Datos de contratación</legend>
+        <div class="col-md-3"> 
+            <label for="puestoId" class="form-label">Puesto</label>
+            <select class="form-select" id="puestoId" name="puestoId" required formControlName="puestoId"> 
+                <option value="0">Todos</option>
+                <option *ngFor="let p of puestos" [ngValue]="p.id">{{ p.nombre }}</option>
+            </select>
+        </div>
+        <div class="col-md-3"> 
+            <label for="fechaContratacion" class="form-label">Fecha de Contratación</label>
+            <input type="date" class="form-control" id="fechaContratacion" name="fechaContratacion" required formControlName="fechaContratacion">
+        </div>
+    </fieldset>
+
+    <div class="row">
+        <div class="col-md-3">
+            <button type="button" class="btn btn-primary full-width" (click)="buscar()">Buscar</button>
+        </div>
+    </div>
+</form>
+<div class="alert alert-danger" *ngIf="errores && errores.length > 0">
+    {{ errores }}
+</div>
+<hr>
+<h3>Resultados de la búsqueda</h3>
+<table class="table table-condensed">
+    <thead>
+        <tr>
+          <th>Foto</th>
+          <th>Nombre</th>
+          <th>Apellido</th>
+          <th>Puesto</th>
+          <th>Fecha Nacimiento</th>
+          <th>Fecha Contratación</th>
+          <th>Dirección</th>
+          <th>Teléfono</th>
+          <th>Correo</th>
+          <th>Estado</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let empleado of empleados">
+          <td>
+            <img *ngIf="empleado.fotografia" class="foto" [src]="empleado.fotografia" alt="Foto de {{ empleado.nombre }}">
+          </td>
+          <td>{{ empleado.nombre }}</td>
+          <td>{{ empleado.apellido }}</td>
+          <td>{{ empleado.puesto }}</td> 
+          <td>{{ empleado.fechaNacimiento | date:'dd/MM/yyyy' }}</td>
+          <td>{{ empleado.fechaContratacion | date:'dd/MM/yyyy' }}</td>
+          <td>{{ empleado.direccion }}</td>
+          <td>{{ empleado.telefono }}</td>
+          <td>{{ empleado.correoElectronico }}</td>
+          <td>{{ empleado.estado }}</td> 
+          <td>
+            <a [routerLink]="['/modificar/', empleado.id]">Modificar</a> &nbsp;
+            <a href="javascript:" (click)="eliminar(empleado)">Eliminar</a>
+          </td>
+        </tr>
+        <tr *ngIf="!empleados || empleados.length == 0">
+            <td colspan="11">
+                <div class="alert alert-info">
+                    No se encontraron registos &nbsp;&nbsp;&nbsp;&nbsp;
+                    <a [routerLink]="['/nuevo']" class="btn btn-primary">Nuevo empleado</a>
+                </div>
+            </td>
+        </tr>
+      </tbody>
+</table>

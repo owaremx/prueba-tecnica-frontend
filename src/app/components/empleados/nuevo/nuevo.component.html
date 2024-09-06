@@ -1,0 +1,72 @@
+<h2>{{accion}} empleado</h2>
+
+<form method="post" [formGroup]="form" ngNativeValidate >
+    <div class="row">
+        <div class="col-md-4">
+            <label for="fotografia" class="form-label">Fotografía</label>
+            <img [src]="form.value.fotografia" alt="" class="img-fluid">
+            <input type="file" class="form-control" id="fotografia" 
+                accept="image/jpeg"
+                (change)="onArchivoSeleccionado($event)"
+                name="fotografia" >
+        </div>
+        <div class="col-md-8">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="nombre" class="form-label">Nombre</label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" maxlength="250" formControlName="nombre"  required>
+                </div>
+                <div class="col-md-6"> 
+                    <label for="apellido" class="form-label">Apellido</label>
+                    <input type="text" class="form-control" id="apellido" name="apellido" maxlength="250" formControlName="apellido" required>
+                </div>
+            </div>
+            
+            <div class="mb-3"> 
+                <label for="puestoId" class="form-label">Puesto</label>
+                <select class="form-select" id="puestoId" name="puestoId" formControlName="puestoId" required> 
+                    <option *ngFor="let p of puestos" [ngValue]="p.id">{{ p.nombre }}</option>
+        
+                    </select>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="fechaNacimiento" class="form-label">Fecha de Nacimiento</label>
+                <input type="date" class="form-control" id="fechaNacimiento" name="fechaNacimiento" formControlName="fechaNacimiento" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="fechaContratacion" class="form-label">Fecha de Contratación</label>
+                <input type="date" class="form-control" id="fechaContratacion" name="fechaContratacion" formControlName="fechaContratacion" required>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="direccion" class="form-label">Dirección</label>
+                <input type="text" class="form-control" id="direccion" maxlength="250" name="direccion" formControlName="direccion" required>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="telefono" class="form-label">Teléfono</label> 
+                    <input type="tel" class="form-control" id="telefono" maxlength="20" name="telefono" formControlName="telefono" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="correoElectronico" class="form-label">Correo Electrónico</label>
+                    <input type="email" class="form-control" id="correoElectronico" maxlength="250" formControlName="correoElectronico" name="correoElectronico" required>
+                </div>
+            </div>
+            
+            <div class="mb-3">
+                <label for="estadoId" class="form-label">Estado</label>
+                <select class="form-select" id="estadoId" name="estadoId" formControlName="estadoId" required>
+                        <option *ngFor="let e of estados" [ngValue]="e.id">{{ e.nombre }}</option>
+                    </select>
+            </div>
+            <button type="submit" class="btn btn-primary" (click)="guardar()">Guardar</button>
+        </div>
+    </div>
+    
+
+    <div class="alert alert-danger" *ngIf="errores && errores.length > 0">
+        {{ errores }}
+    </div>
+
+</form>
